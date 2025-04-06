@@ -1,23 +1,48 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import { ref } from 'vue';
+
+const person = ref({
+  name: 'John Doe',
+  age: 30,
+  address: {
+    city: 'New York',
+    state: 'NY'
+  }
+})
+
+const listOfBook = ref([
+  { id: 1, title: 'Book 1' },
+  { id: 2, title: 'Book 2' },
+  { id: 3, title: 'Book 3' }
+])
+
+function changeBookTitle () {
+  listOfBook.value[0].title = listOfBook.value[0].title === 'Book 1' ? 'Book 1 Updated' : 'Book 1'
+}
+
+function changeAddressCity () {
+  person.value.address.city = person.value.address.city === 'New York' ? 'Los Angeles' : 'New York'
+}
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <div>
+    <h1>Coba ganti nested object</h1>
+    <p>Ini Nama Orang {{ person.name }}</p>
+    <p>Umurnya: {{ person.age }} tahun</p>
+    <p>Alamatnya ada di: Kota {{ person.address.city }}</p>
+    <p>Provinsi: {{ person.address.state }}</p>
+    <button @click="changeAddressCity">Ganti Alamat</button>
+    {{ JSON.stringify(person) }}
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+    <h1>Coba ganti nested array</h1>
+    <div v-for="book in listOfBook" :key="book.id" style="display: flex;">
+      <span>{{ book.id }}. </span>
+      <p>{{ book.title }}</p>
     </div>
-  </header>
 
-  <RouterView />
+    <button @click="changeBookTitle">Ganti Judul Buku</button>
+  </div>
 </template>
 
 <style scoped>
